@@ -387,8 +387,8 @@ void Entity::render(ShaderProgram* program)
 }
 
 void Entity::ai_random(float delta_time) {
-    static float move_timer = 0.0f; // Timer to track duration of movement
-    const float move_duration = 1.5f; // Duration for each movement direction (in seconds)
+    static float move_timer = 0.0f;
+    const float move_duration = 1.5f;
 
     move_timer += delta_time;
 

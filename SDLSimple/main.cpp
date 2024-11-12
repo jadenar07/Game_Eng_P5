@@ -319,7 +319,6 @@ void draw_text(ShaderProgram *program, GLuint font_texture_id, std::string text,
         });
     }
 
-    // 4. And render all of them using the pairs
     glm::mat4 model_matrix = glm::mat4(1.0f);
     model_matrix = glm::translate(model_matrix, position);
     
@@ -359,12 +358,12 @@ void update() {
             if (g_game_state.enemies[i].get_is_active() && g_game_state.player->check_collision(&g_game_state.enemies[i])) {
                 g_game_state.player->check_collision_x(&g_game_state.enemies[i], 1);
                 g_game_state.player->check_collision_y(&g_game_state.enemies[i], 1);
-                // If the player collides with the enemy, deactivate the enemy
+
                 g_game_state.enemies[i].set_is_active(false);
                 if (g_game_state.player->collided_with_enemy_x) {
                     std::cout << "Game Over: You Lose!" << std::endl;
                     game_loss = true;
-                    return; // Exit the loop to avoid further updates
+                    return;
                 }
                 else if (g_game_state.player->collided_with_enemy_y && all_enemies_eliminated < 3) {
                     std::cout << "incramenting" << std::endl;
@@ -375,7 +374,7 @@ void update() {
                 if (all_enemies_eliminated == 3) {
                     LOG("Victory: You Win!");
                     game_won = true;
-                    return; // Exit the loop to avoid further updates
+                    return;
                 }
             }
 
@@ -398,17 +397,16 @@ void update() {
             jump_timer = 0.0f;
         }
         
-        for (int i = 0; i < MAX_BULLETS; i++) {
-            if (g_game_state.bullets[i].get_is_active()) {
-                g_game_state.bullets[i].update(FIXED_TIMESTEP, NULL, NULL, 0, g_game_state.map);
-
-                // Check if bullet goes out of bounds
-                if (g_game_state.bullets[i].get_position().x > g_game_state.map->get_right_bound() ||
-                    g_game_state.bullets[i].get_position().x < g_game_state.map->get_left_bound()) {
-                    g_game_state.bullets[i].set_is_active(false);
-                }
-            }
-        }
+//        for (int i = 0; i < MAX_BULLETS; i++) {
+//            if (g_game_state.bullets[i].get_is_active()) {
+//                g_game_state.bullets[i].update(FIXED_TIMESTEP, NULL, NULL, 0, g_game_state.map);
+//
+//                if (g_game_state.bullets[i].get_position().x > g_game_state.map->get_right_bound() ||
+//                    g_game_state.bullets[i].get_position().x < g_game_state.map->get_left_bound()) {
+//                    g_game_state.bullets[i].set_is_active(false);
+//                }
+//            }
+//        }
         
         if (g_game_state.player->collided_with_enemy_x) {
             LOG("Game Over: You Lose!");
@@ -418,7 +416,6 @@ void update() {
             std::cout << " kill collision check being hit" << std::endl;
         }
 
-        // Reset the collision flags after handling
         g_game_state.player->collided_with_enemy_x = false;
         g_game_state.player->collided_with_enemy_y = false;
 
@@ -426,16 +423,17 @@ void update() {
     }
     g_accumulator = delta_time;
 
-    // Camera follows the player
     g_view_matrix = glm::mat4(1.0f);
     g_view_matrix = glm::translate(g_view_matrix, glm::vec3(-g_game_state.player->get_position().x, 0.0f, 0.0f));
-    g_shader_program.set_view_matrix(g_view_matrix);
 }
 
 
 
 void render() {
+    g_shader_program.set_view_matrix(g_view_matrix);
+
     glClear(GL_COLOR_BUFFER_BIT);
+    
 
     g_game_state.player->render(&g_shader_program);
 
