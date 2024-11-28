@@ -117,15 +117,18 @@ void LevelA::update(float delta_time)
             m_game_state.player->check_collision_x(&m_game_state.enemies[i], 1);
             m_game_state.player->check_collision_y(&m_game_state.enemies[i], 1);
             
-            if (lives > 0) {
-                lives--;
-                std::cout << "inside get lives" << std::endl;
-                m_game_state.player->set_position(initial_player_position); 
-            } else {
+            std::cout << lives<< std::endl;
+            
+            if (lives <= 0) {
                 game_loss = true;
+                m_game_state.player->deactivate();
+            } else {
+                lives--;
+//                std::cout << lives<< std::endl;
+                m_game_state.player->set_position(initial_player_position);
+                
             }
-
-            return;
+            break;
         }
 
         if (m_game_state.enemies[i].get_is_active()) {

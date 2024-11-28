@@ -90,17 +90,6 @@ GLuint map_texture_id = Utility::load_texture("/Users/jadenritchie/Desktop/SDLSi
     m_game_state.enemies[0].set_movement(glm::vec3(0.0f));
     m_game_state.enemies[0].set_acceleration(glm::vec3(0.0f, -9.81f, 0.0f));
     
-    
-    /**
-     BGM and SFX
-     */
-    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
-    
-    m_game_state.bgm = Mix_LoadMUS("assets/dooblydoo.mp3");
-    Mix_PlayMusic(m_game_state.bgm, -1);
-    Mix_VolumeMusic(0.0f);
-    
-    m_game_state.jump_sfx = Mix_LoadWAV("assets/bounce.wav");
 }
 
 void win::update(float delta_time)

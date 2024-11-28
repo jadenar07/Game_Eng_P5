@@ -169,9 +169,9 @@ void const Entity::check_collision_y(Entity *collidable_entities, int collidable
                 m_velocity.y = 0;
                 m_collided_bottom = true;
             }
-            lives--;
             if (lives <= 0) deactivate();
         }
+        was_colliding = is_colliding_now;
         was_colliding = is_colliding_now;
         if (is_colliding_now) return;
     }
@@ -196,7 +196,6 @@ void const Entity::check_collision_x(Entity *collidable_entities, int collidable
                 m_velocity.x = 0;
                 m_collided_left = true;
             }
-            lives--;
             if (lives == 0) deactivate();
         }
         was_colliding = is_colliding_now;
